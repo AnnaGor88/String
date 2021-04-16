@@ -50,7 +50,13 @@ public:
         this->str=new char[size]{};
         strcpy(this->str, other.str);
         cout << "CopyConstructor:\t"<< this << endl;
-        
+    }
+    String(String&& other)
+    {
+        this->size = other.size;
+        this->str = other.str;
+        other.str=nullptr;
+        cout << "MoveConstructor:\t"<<this<< endl;
     }
     ~String()
     {
@@ -60,11 +66,11 @@ public:
     
     char& operator[](int index)
     {
-        return str[index];
+        return this->str[index];
     }
     const char& operator[](int index)const
     {
-        return str[index];
+        return this->str[index];
     }
     
     // Operators
@@ -80,6 +86,15 @@ public:
         cout << "CopyAssignments:\t\t"<< this << endl;
         return *this;
         
+    }
+    String& operator=(String&& other)
+    {
+        delete[] this->str;
+        this->size=other.size;
+        this->str=other.str;
+        other.str=nullptr;
+        cout << "MoveAssignment:\t\t" << this << endl;
+        return *this;
     }
     String& operator+=(const String& other)
     {
@@ -138,9 +153,16 @@ int main() {
     String str1="Hello";
     String str2="World";
     cout << DELIMETER << endl;
-    String str3=str1 + str2; // Оператор + будет выполнять конкатенацию (слияние) строк
-    //cout << &str3.get_str() << endl;
-    cout << DELIMETER << endl;
-    cout << str3 << endl;
+    String str3;
+    str3=str1 + str2; // Оператор + будет выполнять конкатенацию (слияние) строк
+    //cout << str3 << endl;
+    str3.print();
+//    //cout << &str3.get_str() << endl;
+//    cout << DELIMETER << endl;
+//    cout << str3 << endl;
+//    cout << DELIMETER << endl;
+//    str1+=str2;
+//    cout << str1 << endl;
+//    cout << DELIMETER << endl;
     return 0;
 }
